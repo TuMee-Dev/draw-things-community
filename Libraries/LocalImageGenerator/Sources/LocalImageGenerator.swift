@@ -5679,13 +5679,6 @@ extension LocalImageGenerator {
           batchSize: ((Int(configuration.numFrames) - 1) / 8) + 1, version: modelVersion,
           canInjectControls: canInjectControls, shuffleCount: shuffles.count,
           hasCustom: custom != nil)
-        if let videoContinuationFrames {
-          // Grow the latent batch by the continuation's latent-frame count (LTX VAE is 8x
-          // temporal). These leading frames hold the prior clip's clean latents and are
-          // trimmed from the output after sampling.
-          let continuationLatentFrames = (videoContinuationFrames.shape[0] - 1) / 8 + 1
-          batchSize = (batchSize.0 + continuationLatentFrames, batchSize.1)
-        }
       case .auraflow, .flux1, .kandinsky21, .pixart, .sd3, .sd3Large, .sdxlBase, .sdxlRefiner,
         .ssd1b, .v1, .v2, .wurstchenStageB, .wurstchenStageC, .hiDreamI1, .hiDreamO1, .qwenImage,
         .cosmos2_5_2b, .zImage, .ernieImage, .flux2, .flux2_9b, .flux2_4b, .seedvr2_3b,
@@ -7114,13 +7107,6 @@ extension LocalImageGenerator {
           batchSize: ((Int(configuration.numFrames) - 1) / 8) + 1, version: modelVersion,
           canInjectControls: canInjectControls, shuffleCount: shuffles.count,
           hasCustom: custom != nil)
-        if let videoContinuationFrames {
-          // Grow the latent batch by the continuation's latent-frame count (LTX VAE is 8x
-          // temporal). These leading frames hold the prior clip's clean latents and are
-          // trimmed from the output after sampling.
-          let continuationLatentFrames = (videoContinuationFrames.shape[0] - 1) / 8 + 1
-          batchSize = (batchSize.0 + continuationLatentFrames, batchSize.1)
-        }
       case .auraflow, .flux1, .kandinsky21, .pixart, .sd3, .sd3Large, .sdxlBase, .sdxlRefiner,
         .ssd1b, .v1, .v2, .wurstchenStageB, .wurstchenStageC, .hiDreamI1, .hiDreamO1, .qwenImage,
         .cosmos2_5_2b, .zImage, .ernieImage, .flux2, .flux2_9b, .flux2_4b, .seedvr2_3b,
@@ -8028,13 +8014,6 @@ extension LocalImageGenerator {
           batchSize: ((Int(configuration.numFrames) - 1) / 8) + 1, version: modelVersion,
           canInjectControls: canInjectControls, shuffleCount: shuffles.count,
           hasCustom: custom != nil)
-        if let videoContinuationFrames {
-          // Grow the latent batch by the continuation's latent-frame count (LTX VAE is 8x
-          // temporal). These leading frames hold the prior clip's clean latents and are
-          // trimmed from the output after sampling.
-          let continuationLatentFrames = (videoContinuationFrames.shape[0] - 1) / 8 + 1
-          batchSize = (batchSize.0 + continuationLatentFrames, batchSize.1)
-        }
       case .auraflow, .flux1, .kandinsky21, .pixart, .sd3, .sd3Large, .sdxlBase, .sdxlRefiner,
         .ssd1b, .v1, .v2, .wurstchenStageB, .wurstchenStageC, .hiDreamI1, .hiDreamO1, .qwenImage,
         .cosmos2_5_2b, .zImage, .ernieImage, .flux2, .flux2_9b, .flux2_4b, .seedvr2_3b,
