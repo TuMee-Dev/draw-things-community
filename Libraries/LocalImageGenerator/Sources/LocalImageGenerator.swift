@@ -3757,12 +3757,18 @@ extension LocalImageGenerator {
     let inputImage = image
     let image: Tensor<FloatType>?
     let videoContinuationFrames: Tensor<FloatType>?
-    if (modelVersion == .longcatVideoAvatar1_5 || modelVersion == .ltx2
-      || modelVersion == .ltx2_3), let inputImage, inputImage.shape[0] > 1 {
+    if (modelVersion == .longcatVideoAvatar1_5
+      || ((modelVersion == .ltx2 || modelVersion == .ltx2_3) && !configuration.hiresFix)),
+      let inputImage, inputImage.shape[0] > 1 {
       // Multi-frame conditioning (video EXTEND): the client sends the prior clip's trailing
       // frames stacked in `image`. Frame 0 is the anchor init frame; frames 1..N are the
       // continuation frames whose clean latents get patched into the leading positions of the
       // new clip so motion carries across the seam (see the encode/concat + trim sites below).
+      // For LTX this is gated on !hiresFix: a multi-frame LTX init with hiresFix ON is instead
+      // a whole-video UPSCALE (spatial latent upscaler), which needs the full init to pass
+      // straight through img2img+hires — extend and hires-upscale are mutually exclusive per
+      // call, so hiresFix is the intent signal (no redundant flag). longcat keeps its own
+      // shape-only trigger (upstream behavior, unchanged).
       let shape = inputImage.shape
       image = inputImage[0..<1, 0..<shape[1], 0..<shape[2], 0..<shape[3]].copied()
       videoContinuationFrames =
